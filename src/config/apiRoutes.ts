@@ -15,34 +15,62 @@ const API_ROUTES = {
     auth: {
         login: `${baseURL}/auth/login`,
         refresh: `${baseURL}/auth/refresh`,
-        
 
     },
     notify: {
+        //both
+
+        //admin
+        filterLogMails: `${baseURL}/manage/logs/emails/filter`,
         createNotification: `${baseURL}/manage/notifications/`,
         filterNotifications: `${baseURL}/manage/notifications/filter`,
-        filterLogMails: `${baseURL}/manage/logs/emails/filter`,
+
+        //staff
     },
     transaction: {
+        //both
         createCash: `${baseURL}/manage/transactions/cash`,
         filterTransactions: `${baseURL}/manage/transactions/filter`,
         statsTransactions: (params: { date: string }) => `${baseURL}/api/manage/transactions/statistics/stats?${new URLSearchParams(params).toString()}`,
         trendsForManage: `${baseURL}/api/manage/transactions/statistics/trends`,
         distributionForManage: `${baseURL}/api/manage/transactions/statistics/distribution`,
         topUsersForManage: `${baseURL}/api/manage/transactions/statistics/users/top`,
+        
+    },
+    expensetype:{
+        //both
+
+        //admin
+        createExpenseType: `${baseURL}/api/manage/expense-types/`,
+        updateExpenseType:  `${baseURL}/api/manage/expense-types/`,
+        getAllExpenseType:  `${baseURL}/api/manage/expense-types/`,
     },
     wallet: {
-        updateStatus: `${baseURL}/manage/wallets/status`,
-        filterAccounts: `${baseURL}/manage/wallets/filter`,
-        getWalletInfo: `${baseURL}/manage/wallets/14032004`,
-        filterApplications: `${baseURL}/manage/pay-later/applications/filter`,
-        processApplication: `${baseURL}/manage/pay-later/applications/process`,
+        //both
+        getWalletInfo: (walletNumber: string) => `${baseURL}/api/manage/wallets/${walletNumber}`,
+        filterAccounts: `${baseURL}/api/manage/wallets/filter`,
+        updateStatus: `${baseURL}/api/manage/wallets/status`,
+        filterWalletCertifications: `${baseURL}/api/manage/wallet-verifications/filter`,
+        processWalletVerification: `${baseURL}/api/manage/wallet-verifications/process`,
+        processPaylaterApplication: `${baseURL}/manage/pay-later/applications/process`,
+        filterPaylaterApplications: `${baseURL}/manage/pay-later/applications/filter`,
         filterAccountsPaylater: `${baseURL}/manage/pay-later/accounts/filter`,
-        getPayLaterInfo: `${baseURL}/manage/pay-later/accounts/14032004`,
+        getPayLaterInfo: (accountNumber: string) => `${baseURL}/manage/pay-later/accounts/${accountNumber}`,
+        filterBillingCycle: `${baseURL}/manage/pay-later/billing-cycles/filter`,
+        //admin
+
     },
     user: {
-        createBatchUsers: `${baseURL}/api/v1/users/management/create-batch-users`,
+        // both
+        createSingleUser: `${baseURL}/api/v1/users/management/`,
         getStatsUsers: `${baseURL}/api/users/statistics/summary`,
-   }
+
+        //admin
+        createBatchUsers: `${baseURL}/api/v1/users/management/create-batch-users`,
+        unbanUser : `${baseURL}/api/users/management/unlock-users`,
+        banUser : `${baseURL}/api/users/management/ban-users`,
+
+        //staff
+    }
 }
 export default API_ROUTES;
