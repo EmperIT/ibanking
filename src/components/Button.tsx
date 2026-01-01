@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Button } from "antd";
 interface CustomButtonProps {
-  color: string;   // màu chính
+  color?: string;   // màu chính
   hoverColor?: string; // màu hover
   icon?: React.ReactNode;
+  loading?: boolean;
   label: string;
   onClick?: () => void;
 }
@@ -12,6 +13,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   color,
   hoverColor,
   icon,
+  loading = false,
   label,
   onClick,
 }) => {
@@ -20,6 +22,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
     <Button
       icon={icon}
       type="primary"
+      loading={loading}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{

@@ -15,7 +15,6 @@ const API_ROUTES = {
     auth: {
         login: `${baseURL}/auth/login`,
         refresh: `${baseURL}/auth/refresh`,
-
     },
     notify: {
         //both
@@ -29,7 +28,7 @@ const API_ROUTES = {
     },
     transaction: {
         //both
-        createCash: `${baseURL}/manage/transactions/cash`,
+        createCash: `${baseURL}/api/manage/transactions/cash`,
         filterTransactions: `${baseURL}/manage/transactions/filter`,
         statsTransactions: (params: { date: string }) => `${baseURL}/api/manage/transactions/statistics/stats?${new URLSearchParams(params).toString()}`,
         trendsForManage: `${baseURL}/api/manage/transactions/statistics/trends`,
@@ -50,7 +49,7 @@ const API_ROUTES = {
         getWalletInfo: (walletNumber: string) => `${baseURL}/api/manage/wallets/${walletNumber}`,
         filterAccounts: `${baseURL}/api/manage/wallets/filter`,
         updateStatus: `${baseURL}/api/manage/wallets/status`,
-        filterWalletCertifications: `${baseURL}/api/manage/wallet-verifications/filter`,
+        filterWalletVertifications: `${baseURL}/api/manage/wallet-verifications/filter`,
         processWalletVerification: `${baseURL}/api/manage/wallet-verifications/process`,
         processPaylaterApplication: `${baseURL}/manage/pay-later/applications/process`,
         filterPaylaterApplications: `${baseURL}/manage/pay-later/applications/filter`,
@@ -62,14 +61,14 @@ const API_ROUTES = {
     },
     user: {
         // both
-        createSingleUser: `${baseURL}/api/v1/users/management/`,
+        createSingleUser: `${baseURL}/api/users/management/`,
         getStatsUsers: `${baseURL}/api/users/statistics/summary`,
 
         //admin
-        createBatchUsers: `${baseURL}/api/v1/users/management/create-batch-users`,
+        createBatchUsers: `${baseURL}/api/users/management/create-batch-users`,
         unbanUser : `${baseURL}/api/users/management/unlock-users`,
         banUser : `${baseURL}/api/users/management/ban-users`,
-
+        filterUsers: `${baseURL}/api/users/management/filter`,
         //staff
     }
 }

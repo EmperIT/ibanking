@@ -9,6 +9,10 @@ import {
     userListRoute,
     addUserDetailRoute,
     editUserDetailRoute,
+    walletNormalManagementRoute,
+    walletManagementRoute,
+    walletManagementIndexRoute,
+    walletDetailRoute,
     roleManagementRoute,
     roleManagementIndexRoute,
     transactionManagementRoute,
@@ -33,6 +37,12 @@ export const routeTree = rootRoute.addChildren([
             ]),
             roleManagementRoute.addChildren([
                 roleManagementIndexRoute,
+            ]),
+        ]),
+        walletManagementRoute.addChildren([
+            walletNormalManagementRoute.addChildren([
+                walletManagementIndexRoute,
+                walletDetailRoute,
             ]),
         ]),
         transactionManagementRoute.addChildren([
