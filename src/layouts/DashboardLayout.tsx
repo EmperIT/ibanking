@@ -44,6 +44,7 @@ const DashboardLayout = () => {
             icon: <UsergroupAddOutlined />,
             subMenu: [
                 { key: "wallets", label: "Ví thường" },
+                { key: "paylaters", label: "Ví trả sau" },
             ],
         },
         {

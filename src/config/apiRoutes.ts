@@ -29,7 +29,7 @@ const API_ROUTES = {
     transaction: {
         //both
         createCash: `${baseURL}/api/manage/transactions/cash`,
-        filterTransactions: `${baseURL}/manage/transactions/filter`,
+        filterTransactions: `${baseURL}/api/manage/transactions/filter`,
         statsTransactions: (params: { date: string }) => `${baseURL}/api/manage/transactions/statistics/stats?${new URLSearchParams(params).toString()}`,
         trendsForManage: `${baseURL}/api/manage/transactions/statistics/trends`,
         distributionForManage: `${baseURL}/api/manage/transactions/statistics/distribution`,
@@ -51,11 +51,11 @@ const API_ROUTES = {
         updateStatus: `${baseURL}/api/manage/wallets/status`,
         filterWalletVertifications: `${baseURL}/api/manage/wallet-verifications/filter`,
         processWalletVerification: `${baseURL}/api/manage/wallet-verifications/process`,
-        processPaylaterApplication: `${baseURL}/manage/pay-later/applications/process`,
-        filterPaylaterApplications: `${baseURL}/manage/pay-later/applications/filter`,
-        filterAccountsPaylater: `${baseURL}/manage/pay-later/accounts/filter`,
-        getPayLaterInfo: (accountNumber: string) => `${baseURL}/manage/pay-later/accounts/${accountNumber}`,
-        filterBillingCycle: `${baseURL}/manage/pay-later/billing-cycles/filter`,
+        processPaylaterApplication: `${baseURL}/api/manage/pay-later/applications/process`,
+        filterPaylaterApplications: `${baseURL}/api/manage/pay-later/applications/filter`,
+        filterAccountsPaylater: `${baseURL}/api/manage/pay-later/accounts/filter`,
+        getPayLaterInfo: (accountNumber: string) => `${baseURL}/api/manage/pay-later/accounts/${accountNumber}`,
+        filterBillingCycle: `${baseURL}/api/manage/pay-later/billing-cycles/filter`,
         //admin
 
     },

@@ -11,7 +11,7 @@ export interface WalletResource {
     verified?: boolean;
 }
 export interface FilterWallets {
-    keyword: string;
+    keyword?: string;
     status?: WalletStatus;
     sort_by?: string;
 }

@@ -15,11 +15,14 @@ export interface TransactionResource {
 }
 
 export interface FilterTransactions {
-  status?: TransactionStatus;
-  sort_by?: string;
+  accountNumber?: string;
+  accountType?: "WALLET" | "PAY_LATER";
+  type?: ActionType;
   fromDate?: string;
   toDate?: string;
+  sortBy?: string;
 }
+
 
 export interface CreateCashTransaction {
   actionType: ActionType;

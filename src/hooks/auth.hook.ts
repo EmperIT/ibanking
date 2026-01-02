@@ -3,12 +3,11 @@ import toast from "react-hot-toast";
 import type {
     LoginRequest,
     LoginResponse,
-
 } from "@/types/auth.type";
 
 import authService from "@/services/auth.service";
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-
+import { useMutation } from '@tanstack/react-query';
+import type { ErrorResponse } from "@/types/error.type";
 export function useLogin() {
     const navigate = useNavigate();
 
@@ -24,8 +23,8 @@ export function useLogin() {
             toast.success('Đăng nhập thành công');
             navigate({ to: '/manage' });
         },
-        onError: (error) => {
-            toast.error(`${(error as Error).message || 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.'}`);
+        onError: (error: ErrorResponse) => {
+            toast.error(`${error.message || 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.'}`);
         }
     })
 

@@ -36,7 +36,7 @@ export function useGetWalletInfo(walletNumber?: string) {
     });
 }
 
-export function usePayLaters(filterParams: FilterPayLaters) {
+export function useFilterPayLaters(filterParams: FilterPayLaters) {
     return useQuery<PayLaterPaginationResponse>({
         queryKey: ['filterPayLaters', filterParams],
         queryFn: () => walletService.filterPaylaters(filterParams),

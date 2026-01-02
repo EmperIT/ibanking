@@ -3,8 +3,9 @@ import { dashboardLayoutRoute } from "./layout";
 import { Outlet } from "@tanstack/react-router";
 import UserManagementPage from "@/pages/dashboard/user/UserManagement";
 import UserDetailPage from "@/pages/dashboard/user/UserDetail";
-import WalletManagementPage from "@/pages/wallet/WalletManagementPage";
-import WalletDetailPage from "@/pages/wallet/WalletDetail";
+import WalletManagementPage from "@/pages/dashboard/wallet/WalletManagementPage";
+import WalletDetailPage from "@/pages/dashboard/wallet/WalletDetail";
+import PayLaterManagementPage from "@/pages/dashboard/paylater/PaylaterManagementPage";
 import RoleManagementPage from "@/pages/dashboard/role/RolePage";
 import TransactionManagementPage from "@/pages/dashboard/transaction/TransactionPage";
 import TransactionDetailPage from "@/pages/dashboard/transaction/TransactionDetail";
@@ -63,6 +64,16 @@ export const walletDetailRoute = createRoute({
     component: WalletDetailPage,
 });
 
+export const paylaterManagementRoute = createRoute({
+    getParentRoute: () => walletManagementRoute,
+    path: "paylaters",
+    component: () => <div><Outlet /></div>
+});
+export const paylaterManagementIndexRoute = createRoute({
+    getParentRoute: () => paylaterManagementRoute,
+    path: "/",
+    component: PayLaterManagementPage,
+});
 export const roleManagementRoute = createRoute({
     getParentRoute: () => usermanagementRoute,
     path: "roles",
