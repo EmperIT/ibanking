@@ -113,10 +113,6 @@ const WalletDetailPage: React.FC = () => {
                     </div>
                   </div>
                 </Form.Item>
-
-
-
-
                 <Form.Item label="Xác thực">
                   <Input
                     disabled

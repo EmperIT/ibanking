@@ -1,104 +1,104 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { Tabs, Space, Spin, Select } from "antd";
 import { SearchComponent } from "@/components/Search";
-import {
-
-    EditOutlined,
-} from "@ant-design/icons";
+import { EyeOutlined } from "@ant-design/icons";
 import TableComponent from "@/components/Table";
 import type { TableColumn } from "@/components/Table";
-
 import PaginationComponent from "@/components/Pagination";
 import { colors } from "@/theme/color";
-import { useNavigate } from "@tanstack/react-router";
-import { type WalletResource } from "@/types/walltet.type";
-import { useFilterWallets } from "@/hooks/wallet.hook";
-import {
-    walletDetailRoute,
-} from "@/routes/dashboard";
-import type { WalletStatus } from "@/enum/status";
-const WalletManagementPage: React.FC = () => {
-    const navigate = useNavigate();
+import { useFilterWalletVerifications } from "@/hooks/wallet.hook"; // Hook bạn đã có
+
+import WalletVerificationDetailModal from "./WalletVerificationDetailModal";
+import type { VerificationStatus } from "@/enum/status"; // Giả sử bạn có enum này
+import type { WalletVerificationResource } from "@/types/walltet.type";
+
+
+const WalletVerificationManagementPage: React.FC = () => {
 
     const [searchValue, setSearchValue] = useState("");
-    const [filterStatus, setFilterStatus] = useState<WalletStatus | "">("");
+    const [filterStatus, setFilterStatus] = useState<VerificationStatus | "">("");
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [debounced, setDebounced] = useState(searchValue);
-
     const [sortBy, setSortBy] = useState<string | undefined>();
+    const [detailModalOpen, setDetailModalOpen] = useState(false);
+    const [selectedVerified, setSelectedVerified] = useState<WalletVerificationResource | null>(null);
 
-
+    const openDetailModal = (record: WalletVerificationResource) => {
+        setSelectedVerified(record);
+        setDetailModalOpen(true);
+    };
 
     /* =======================
-       FILTER PARAMS → BACKEND
+       DEBOUNCE SEARCH
        ======================= */
     useEffect(() => {
         const handler = setTimeout(() => {
             setDebounced(searchValue);
         }, 500);
-        return () => {
-            clearTimeout(handler);
-        }
+        return () => clearTimeout(handler);
     }, [searchValue]);
+
+    /* =======================
+       FILTER PARAMS → BACKEND
+       ======================= */
     const filterParams = useMemo(
         () => ({
-            keyword: debounced.trim() || "",
+            keyword: debounced.trim() || undefined,
             status: filterStatus || undefined,
             sort_by: sortBy,
         }),
         [debounced, filterStatus, sortBy]
     );
 
-
     /* =======================
-       FETCH USERS
+       FETCH DATA
        ======================= */
-    const { data, isLoading } = useFilterWallets(filterParams);
+    const { data, isLoading } = useFilterWalletVerifications(filterParams);
 
-    const wallets: WalletResource[] = data?.contents ?? [];
-    const totalItems = data?.totalElements ?? wallets.length;
+    const verifications: WalletVerificationResource[] = data?.contents ?? [];
+    const totalItems = data?.totalElements ?? verifications.length;
 
     /* =======================
        PAGINATION (FE)
        ======================= */
     const startIndex = (currentPage - 1) * itemsPerPage;
-    const paginatedData = wallets.slice(
-        startIndex,
-        startIndex + itemsPerPage
-    );
+    const paginatedData = verifications.slice(startIndex, startIndex + itemsPerPage);
 
     /* =======================
        RENDER STATUS
        ======================= */
-    const renderStatus = (status?: WalletStatus | "") => {
+    const renderStatus = (status?: VerificationStatus | "") => {
         if (!status) return "-";
+
         const key = String(status).toUpperCase();
-
-
-        const statusConfig: Record<string, { label: string; bg: string; color: string }> = {
-            ACTIVE: {
-                label: "Hoạt động",
+        const statusConfig: Record<
+            string,
+            { label: string; bg: string; color: string }
+        > = {
+            APPROVED: {
+                label: "Đã duyệt",
                 bg: "#D1FADF",
                 color: "#027A48",
             },
             PENDING: {
-                label: "Bị khóa",
-                bg: "#FEE4E2",
-                color: "#B42318",
-            },
-            SUSPENDED: {
-                label: "Chưa kích hoạt",
+                label: "Chờ duyệt",
                 bg: "#FEF0C7",
                 color: "#B54708",
             },
-        } as const;
+            REJECTED: {
+                label: "Từ chối",
+                bg: "#FEE4E2",
+                color: "#B42318",
+            },
+        };
 
         const config = statusConfig[key] ?? {
             label: key,
             bg: "#F3F4F6",
             color: "#374151",
         };
+
         return (
             <span
                 className="inline-block px-3 py-1 rounded-md text-sm font-medium"
@@ -115,7 +115,7 @@ const WalletManagementPage: React.FC = () => {
     /* =======================
        TABLE COLUMNS
        ======================= */
-    const columns: TableColumn<WalletResource>[] = [
+    const columns: TableColumn<WalletVerificationResource>[] = [
         {
             key: "stt",
             label: "STT",
@@ -123,46 +123,49 @@ const WalletManagementPage: React.FC = () => {
             render: (_item, index) => startIndex + index + 1,
         },
         {
-            key: "username",
-            label: "Chủ ví",
-            render: (item) => item.username || "-",
-        },
-        {
-            key: "mail",
-            label: "Email",
-            render: (item) => item.mail || "-",
-        },
-        {
             key: "walletNumber",
-            label: "Số tài khoản",
+            label: "Số ví",
             render: (item) => (
                 <span className="font-mono">{item.walletNumber || "-"}</span>
             ),
         },
         {
-            key: "merchantName",
-            label: "Ngân hàng",
-            render: (item) => item.merchantName || "-",
+            key: "invoiceDisplayName",
+            label: "Tên hiển thị hóa đơn",
+            render: (item) => item.invoiceDisplayName || "-",
         },
         {
-            key: "balance",
-            label: "Số dư",
-            align: "right",
+            key: "businessName",
+            label: "Tên doanh nghiệp",
+            render: (item) => item.businessName || "-",
+        },
+        {
+            key: "businessCode",
+            label: "Mã số thuế",
+            render: (item) => item.businessCode || "-",
+        },
+        {
+            key: "representativeName",
+            label: "Người đại diện",
+            render: (item) => item.representativeName || "-",
+        },
+        {
+            key: "contactEmail",
+            label: "Email liên hệ",
+            render: (item) => item.contactEmail || "-",
+        },
+        {
+            key: "contactPhone",
+            label: "SĐT liên hệ",
+            render: (item) => item.contactPhone || "-",
+        },
+        {
+            key: "createdAt",
+            label: "Ngày tạo đơn",
             render: (item) =>
-                item.balance != null
-                    ? item.balance.toLocaleString("vi-VN") + " ₫"
+                item.createdAt
+                    ? new Date(item.createdAt).toLocaleDateString("vi-VN")
                     : "-",
-        },
-        {
-            key: "verified",
-            label: "Xác thực",
-            align: "center",
-            render: (item) =>
-                item.verified ? (
-                    <span className="text-green-600 font-medium">✔ Đã xác thực</span>
-                ) : (
-                    <span className="text-gray-400">✖ Chưa xác thực</span>
-                ),
         },
         {
             key: "status",
@@ -177,21 +180,24 @@ const WalletManagementPage: React.FC = () => {
         },
     ];
 
-
     /* =======================
        ACTIONS
        ======================= */
-    const renderActions = (item: WalletResource) => (
+    const renderActions = (item: WalletVerificationResource) => (
         <Space size={12}>
-            <EditOutlined
-                title="Xem chi tiết ví"
+            <EyeOutlined
+                title="Xem chi tiết đơn xác thực"
                 style={{ fontSize: 18, color: colors.orange.o1, cursor: "pointer" }}
-                onClick={() =>
-                    navigate({
-                        to: walletDetailRoute.to,
-                        params: { walletNumber: item.walletNumber },
-                    })
-                }
+                onClick={() => openDetailModal(item)}
+            />
+
+            <WalletVerificationDetailModal
+                open={detailModalOpen}
+                verified={selectedVerified}
+                onClose={() => {
+                    setDetailModalOpen(false);
+                    setSelectedVerified(null);
+                }}
             />
         </Space>
     );
@@ -200,14 +206,13 @@ const WalletManagementPage: React.FC = () => {
         <div className="flex flex-col space-y-6 p-5">
             {/* HEADER */}
             <div className="flex items-center gap-4 flex-wrap">
-                <h2 className="text-2xl font-bold">Danh sách ví</h2>
+                <h2 className="text-2xl font-bold">Danh sách đơn ví xác thực</h2>
                 <SearchComponent
-                    placeholder="Tìm kiếm theo tên, email, SĐT..."
+                    placeholder="Tìm kiếm theo số ví, tên DN, email, SĐT..."
                     value={searchValue}
                     onChange={setSearchValue}
                     onSearch={setSearchValue}
                 />
-
             </div>
 
             <div className="bg-white p-4 rounded-lg shadow-md space-y-4">
@@ -215,17 +220,18 @@ const WalletManagementPage: React.FC = () => {
                     activeKey={String(filterStatus)}
                     onChange={(key) => {
                         setCurrentPage(1);
-                        setFilterStatus(key as WalletStatus | "");
+                        setFilterStatus(key as VerificationStatus | "");
                     }}
                     items={[
                         { key: "", label: "Tất cả" },
-                        { key: "ACTIVE", label: "Hoạt động" },
-                        { key: "PENDING", label: "Chưa kích hoạt" },
-                        { key: "SUSPENDED", label: "Tạm khóa" },
+                        { key: "PENDING", label: "Chờ duyệt" },
+                        { key: "APPROVED", label: "Đã duyệt" },
+                        { key: "REJECTED", label: "Từ chối" },
+                        { key: "CANCELED", label: "Đã hủy" },
                     ]}
                 />
+
                 <div className="flex justify-end">
-                    {/* SORT */}
                     <Select
                         allowClear
                         placeholder="Sắp xếp"
@@ -235,12 +241,12 @@ const WalletManagementPage: React.FC = () => {
                             setSortBy(value);
                         }}
                         options={[
-                            { value: "word_asc", label: "Từ A-Z" },
-                            { value: "word_des", label: "Từ Z-A" },
-
+                            { value: "date_asc", label: "Ngày cũ nhất trước" },
+                            { value: "date_desc", label: "Ngày mới nhất trước" },
                         ]}
                     />
                 </div>
+
                 {/* TABLE */}
                 {isLoading ? (
                     <div className="flex justify-center py-10">
@@ -248,12 +254,11 @@ const WalletManagementPage: React.FC = () => {
                     </div>
                 ) : (
                     <>
-                        <TableComponent<WalletResource>
+                        <TableComponent<WalletVerificationResource>
                             columns={columns}
                             dataSource={paginatedData}
                             renderActions={renderActions}
                         />
-
                         <PaginationComponent
                             currentPage={currentPage}
                             totalItems={totalItems}
@@ -268,4 +273,4 @@ const WalletManagementPage: React.FC = () => {
     );
 };
 
-export default WalletManagementPage;
+export default WalletVerificationManagementPage;

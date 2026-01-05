@@ -247,7 +247,7 @@ const TransactionManagementPage: React.FC = () => {
             <Select
               value={sortBy || undefined}
               placeholder="Sắp xếp"
-              style={{ width: 200 }}
+              style={{ width: 160 }}
               allowClear
               onChange={(value) => setSortBy(value)}
               options={[
@@ -293,7 +293,7 @@ const TransactionManagementPage: React.FC = () => {
                   ? "Chọn ví"
                   : "Pay Later (chưa hỗ trợ)"
               }
-              style={{ width: 260 }}
+              style={{ width: 160 }}
               allowClear
               loading={isLoadingWallets}
               disabled={accountType !== "WALLET"}
@@ -304,7 +304,7 @@ const TransactionManagementPage: React.FC = () => {
               value={actionType}
               placeholder="Loại giao dịch"
               allowClear
-              style={{ width: 220 }}
+              style={{ width: 160}}
               onChange={(v) => setActionType(v)}
               options={[
                 { value: "CASH_DEPOSIT", label: "Nạp tiền mặt" },

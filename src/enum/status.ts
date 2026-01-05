@@ -33,6 +33,15 @@ export const WalletStatus = {
 export type WalletStatus =
     (typeof WalletStatus)[keyof typeof WalletStatus];
 
+export const VerificationStatus = {
+    PENDING: "PENDING",
+    APPROVED: "APPROVED",
+    REJECTED: "REJECTED",
+    CANCELLED: "CANCELED"
+} as const
+export type VerificationStatus =
+    (typeof VerificationStatus)[keyof typeof VerificationStatus]
+export type PayLaterApplicationStatus = VerificationStatus
 export const TransactionStatus = {
     PENDING: "PENDING",
     COMPLETED: "COMPLETED",
@@ -56,3 +65,12 @@ export const ActionType = {
 
 export type ActionType =
     (typeof ActionType)[keyof typeof ActionType];
+
+export const PayLaterApplicationType = {
+    ACTIVATION: "ACTIVATION", // Kích hoạt thẻ PayLater
+    LIMIT_ADJUSTMENT: "LIMIT_ADJUSTMENT", // Điều chỉnh hạn mức tín dụng
+    SUSPEND_REQUEST: "SUSPEND_REQUEST" // Yêu cầu tạm ngưng thẻ PayLater
+} as const;
+
+export type PayLaterApplicationType =
+    (typeof PayLaterApplicationType)[keyof typeof PayLaterApplicationType];

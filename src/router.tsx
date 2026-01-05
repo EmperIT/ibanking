@@ -13,8 +13,11 @@ import {
     walletManagementRoute,
     walletManagementIndexRoute,
     walletDetailRoute,
-    paylaterManagementRoute,
-    paylaterManagementIndexRoute,
+    walletVerificationManagementRoute,
+    paylaterAccountRoute,
+    paylaterApplicationIndexRoute,
+    paylaterApplicationRoute,
+    paylaterAccountIndexRoute,
     roleManagementRoute,
     roleManagementIndexRoute,
     transactionManagementRoute,
@@ -46,8 +49,12 @@ export const routeTree = rootRoute.addChildren([
                 walletManagementIndexRoute,
                 walletDetailRoute,
             ]),
-            paylaterManagementRoute.addChildren([
-                paylaterManagementIndexRoute,
+            walletVerificationManagementRoute,
+            paylaterAccountRoute.addChildren([
+                paylaterAccountIndexRoute,
+            ]),
+            paylaterApplicationRoute.addChildren([
+                paylaterApplicationIndexRoute,
             ]),
         ]),
         transactionManagementRoute.addChildren([

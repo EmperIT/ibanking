@@ -5,7 +5,9 @@ import UserManagementPage from "@/pages/dashboard/user/UserManagement";
 import UserDetailPage from "@/pages/dashboard/user/UserDetail";
 import WalletManagementPage from "@/pages/dashboard/wallet/WalletManagementPage";
 import WalletDetailPage from "@/pages/dashboard/wallet/WalletDetail";
-import PayLaterManagementPage from "@/pages/dashboard/paylater/PaylaterManagementPage";
+import WalletVerificationManagementPage from "@/pages/dashboard/wallet/WalletVerificationManagementPage";
+import PayLaterAccountPage from "@/pages/dashboard/paylater/PaylaterAccountPage";
+import PayLaterApplicationPage from "@/pages/dashboard/paylater/PaylaterApplicationPage";
 import RoleManagementPage from "@/pages/dashboard/role/RolePage";
 import TransactionManagementPage from "@/pages/dashboard/transaction/TransactionPage";
 import TransactionDetailPage from "@/pages/dashboard/transaction/TransactionDetail";
@@ -64,15 +66,32 @@ export const walletDetailRoute = createRoute({
     component: WalletDetailPage,
 });
 
-export const paylaterManagementRoute = createRoute({
+export const walletVerificationManagementRoute = createRoute({
+    getParentRoute: () => walletManagementRoute,
+    path: "wallet-verifications",
+    component: WalletVerificationManagementPage,
+});
+
+export const paylaterAccountRoute = createRoute({
     getParentRoute: () => walletManagementRoute,
     path: "paylaters",
     component: () => <div><Outlet /></div>
 });
-export const paylaterManagementIndexRoute = createRoute({
-    getParentRoute: () => paylaterManagementRoute,
+export const paylaterAccountIndexRoute = createRoute({
+    getParentRoute: () => paylaterAccountRoute,
     path: "/",
-    component: PayLaterManagementPage,
+    component: PayLaterAccountPage,
+});
+
+export const paylaterApplicationRoute = createRoute({
+    getParentRoute: () => walletManagementRoute,
+    path: "paylater-applications",
+    component: () => <div><Outlet /></div>
+});
+export const paylaterApplicationIndexRoute = createRoute({
+    getParentRoute: () => paylaterApplicationRoute,
+    path: "/",
+    component: PayLaterApplicationPage,
 });
 export const roleManagementRoute = createRoute({
     getParentRoute: () => usermanagementRoute,

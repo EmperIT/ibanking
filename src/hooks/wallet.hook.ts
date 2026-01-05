@@ -6,8 +6,13 @@ import type {
     FilterWallets,
     WalletResponse,
     WalletPaginationResponse,
+    FilterWalletVertifications,
+    WalletsVerificationPaginationResponse,
     FilterPayLaters,
+    FilterPayLatersApplications,
     PayLaterPaginationResponse,
+    PayLaterApplicationPaginationResponse,
+    PayLaterResponse,
 } from "@/types/walltet.type";
 import type { AxiosError } from "axios";
 import type { ErrorResponse } from "@/types/error.type";
@@ -36,10 +41,43 @@ export function useGetWalletInfo(walletNumber?: string) {
     });
 }
 
+export function useFilterWalletVerifications(filterParams: FilterWalletVertifications) {
+    return useQuery<WalletsVerificationPaginationResponse>({
+        queryKey: ['filterWalletVerifications', filterParams],
+        queryFn: () => walletService.filterWalletVerifications(filterParams),
+        staleTime: 5 * 60 * 1000,     // 5 phút coi data là "fresh"
+        refetchOnWindowFocus: false, // không refetch khi focus lại tab
+        refetchOnReconnect: false,   // không refetch khi mạng reconnect
+        retry: 1,
+    });
+}
+
 export function useFilterPayLaters(filterParams: FilterPayLaters) {
     return useQuery<PayLaterPaginationResponse>({
         queryKey: ['filterPayLaters', filterParams],
-        queryFn: () => walletService.filterPaylaters(filterParams),
+        queryFn: () => walletService.filterAccountPaylaters(filterParams),
+        staleTime: 5 * 60 * 1000,     // 5 phút coi data là "fresh"
+        refetchOnWindowFocus: false, // không refetch khi focus lại tab
+        refetchOnReconnect: false,   // không refetch khi mạng reconnect
+        retry: 1,
+    });
+}
+
+export function useFilterPayLaterApplications(filterParams: FilterPayLatersApplications) {
+    return useQuery<PayLaterApplicationPaginationResponse>({
+        queryKey: ['filterPayLaterApplications', filterParams],
+        queryFn: () => walletService.filterPaylaterApplications(filterParams),
+        staleTime: 5 * 60 * 1000,     // 5 phút coi data là "fresh"
+        refetchOnWindowFocus: false, // không refetch khi focus lại tab
+        refetchOnReconnect: false,   // không refetch khi mạng reconnect
+        retry: 1,
+    });
+}
+export function useGetPayLaterInfo(username?: string) {
+    return useQuery<PayLaterResponse>({
+        queryKey: ['getPayLaterInfo', username],
+        enabled: !!username,
+        queryFn: () => walletService.getPaylaterInfo(username as string),
         staleTime: 5 * 60 * 1000,     // 5 phút coi data là "fresh"
         refetchOnWindowFocus: false, // không refetch khi focus lại tab
         refetchOnReconnect: false,   // không refetch khi mạng reconnect

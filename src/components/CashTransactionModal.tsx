@@ -61,6 +61,8 @@ const CashTransactionModal: React.FC<Props> = ({
             formatter={(v) =>
               `${v}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             }
+            style={{ width: "100%" }}
+
           />
         </Form.Item>
 

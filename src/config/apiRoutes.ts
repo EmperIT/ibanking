@@ -13,7 +13,7 @@ const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 const API_ROUTES = {
     auth: {
-        login: `${baseURL}/auth/login`,
+        login: `${baseURL}/auth/login`, //done 
         refresh: `${baseURL}/auth/refresh`,
     },
     notify: {
@@ -28,8 +28,8 @@ const API_ROUTES = {
     },
     transaction: {
         //both
-        createCash: `${baseURL}/api/manage/transactions/cash`,
-        filterTransactions: `${baseURL}/api/manage/transactions/filter`,
+        createCash: `${baseURL}/api/manage/transactions/cash`, //done
+        filterTransactions: `${baseURL}/api/manage/transactions/filter`, //done
         statsTransactions: (params: { date: string }) => `${baseURL}/api/manage/transactions/statistics/stats?${new URLSearchParams(params).toString()}`,
         trendsForManage: `${baseURL}/api/manage/transactions/statistics/trends`,
         distributionForManage: `${baseURL}/api/manage/transactions/statistics/distribution`,
@@ -46,14 +46,14 @@ const API_ROUTES = {
     },
     wallet: {
         //both
-        getWalletInfo: (walletNumber: string) => `${baseURL}/api/manage/wallets/${walletNumber}`,
-        filterAccounts: `${baseURL}/api/manage/wallets/filter`,
+        getWalletInfo: (walletNumber: string) => `${baseURL}/api/manage/wallets/${walletNumber}`,// done
+        filterAccounts: `${baseURL}/api/manage/wallets/filter`,//done
         updateStatus: `${baseURL}/api/manage/wallets/status`,
         filterWalletVertifications: `${baseURL}/api/manage/wallet-verifications/filter`,
         processWalletVerification: `${baseURL}/api/manage/wallet-verifications/process`,
         processPaylaterApplication: `${baseURL}/api/manage/pay-later/applications/process`,
-        filterPaylaterApplications: `${baseURL}/api/manage/pay-later/applications/filter`,
-        filterAccountsPaylater: `${baseURL}/api/manage/pay-later/accounts/filter`,
+        filterPaylaterApplications: `${baseURL}/api/manage/pay-later/applications/filter`,//done
+        filterAccountsPaylater: `${baseURL}/api/manage/pay-later/accounts/filter`,//done
         getPayLaterInfo: (accountNumber: string) => `${baseURL}/api/manage/pay-later/accounts/${accountNumber}`,
         filterBillingCycle: `${baseURL}/api/manage/pay-later/billing-cycles/filter`,
         //admin
@@ -61,14 +61,14 @@ const API_ROUTES = {
     },
     user: {
         // both
-        createSingleUser: `${baseURL}/api/users/management/`,
+        createSingleUser: `${baseURL}/api/users/management/`, //done
         getStatsUsers: `${baseURL}/api/users/statistics/summary`,
 
         //admin
         createBatchUsers: `${baseURL}/api/users/management/create-batch-users`,
-        unbanUser : `${baseURL}/api/users/management/unlock-users`,
-        banUser : `${baseURL}/api/users/management/ban-users`,
-        filterUsers: `${baseURL}/api/users/management/filter`,
+        unbanUser : `${baseURL}/api/users/management/unlock-users`,//done
+        banUser : `${baseURL}/api/users/management/ban-users`,//done
+        filterUsers: `${baseURL}/api/users/management/filter`,//done
         //staff
     }
 }
