@@ -21,7 +21,7 @@ export function useLogin() {
             const token = _res.access_token;
             localStorage.setItem('access_token', token);
             toast.success('Đăng nhập thành công');
-            navigate({ to: '/manage' });
+            navigate({ to: '/manage/analytics' });
         },
         onError: (error: ErrorResponse) => {
             toast.error(`${error.message || 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.'}`);

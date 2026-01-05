@@ -20,9 +20,9 @@ const API_ROUTES = {
         //both
 
         //admin
-        filterLogMails: `${baseURL}/manage/logs/emails/filter`,
-        createNotification: `${baseURL}/manage/notifications/`,
-        filterNotifications: `${baseURL}/manage/notifications/filter`,
+        filterLogMails: `${baseURL}/api/manage/logs/emails/filter`,
+        createNotification: `${baseURL}/api/manage/notifications/`,
+        filterNotifications: `${baseURL}/api/manage/notifications/filter`,
 
         //staff
     },

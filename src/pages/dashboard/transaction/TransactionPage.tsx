@@ -2,7 +2,6 @@ import React, { useState, useMemo, useEffect } from "react";
 import dayjs from 'dayjs';
 import { Spin, Tabs, DatePicker, Select } from "antd";
 import { EyeOutlined, FileExcelOutlined } from "@ant-design/icons";
-import { useNavigate } from "@tanstack/react-router";
 import { toast } from "react-hot-toast";
 
 import CustomButton from "@/components/Button";
@@ -10,13 +9,15 @@ import TableComponent, { type TableColumn } from "@/components/Table";
 import PaginationComponent from "@/components/Pagination";
 import { colors } from "@/theme/color";
 import { ActionType, TransactionStatus } from "@/enum/status";
-import { transactionDetailRoute } from "@/routes/dashboard";
+import TransactionDetailModal from "./TransactionDetailModal";
 import type { TransactionResource } from "@/types/transaction.type";
 import { useFilterTransactions } from "@/hooks/transaction.hook";
 import { useFilterWallets } from "@/hooks/wallet.hook";
 import { WalletStatus } from "@/enum/status";
 const TransactionManagementPage: React.FC = () => {
-  const navigate = useNavigate();
+
+  const [detailModalOpen, setDetailModalOpen] = useState(false);
+  const [selectedTransaction, setSelectedTransaction] = useState<TransactionResource | null>(null);
   const { RangePicker } = DatePicker;
   const [filterStatus, setFilterStatus] = useState<TransactionStatus | "">("");
   const [sortBy, setSortBy] = useState<string>("");
@@ -207,7 +208,8 @@ const TransactionManagementPage: React.FC = () => {
   const renderActions = (item: TransactionResource) => (
     <EyeOutlined
       onClick={() => {
-        navigate({ to: transactionDetailRoute.to, params: { id: item.id } });
+        setSelectedTransaction(item);
+        setDetailModalOpen(true);
       }}
       style={{
         fontSize: 18,
@@ -281,7 +283,7 @@ const TransactionManagementPage: React.FC = () => {
               }}
               options={[
                 { value: "WALLET", label: "Ví thường" },
-                { value: "PAY_LATER", label: "Pay Later" },
+                { value: "PAY_LATER", label: "Ví trả sau" },
               ]}
             />
 
@@ -304,7 +306,7 @@ const TransactionManagementPage: React.FC = () => {
               value={actionType}
               placeholder="Loại giao dịch"
               allowClear
-              style={{ width: 160}}
+              style={{ width: 160 }}
               onChange={(v) => setActionType(v)}
               options={[
                 { value: "CASH_DEPOSIT", label: "Nạp tiền mặt" },
@@ -320,8 +322,8 @@ const TransactionManagementPage: React.FC = () => {
             {/* RESET */}
             <CustomButton
               label="Xóa lọc"
-              color={colors.gray.g2}
-              hoverColor={colors.gray.g3}
+              color={colors.blue.b2}
+              hoverColor={colors.blue.b3}
               onClick={() => {
                 setFilterStatus("");
                 setSortBy("");
@@ -359,6 +361,14 @@ const TransactionManagementPage: React.FC = () => {
               itemsPerPage={itemsPerPage}
               onPageChange={setCurrentPage}
               onItemsPerPageChange={setItemsPerPage}
+            />
+            <TransactionDetailModal
+              open={detailModalOpen}
+              transaction={selectedTransaction}
+              onClose={() => {
+                setDetailModalOpen(false);
+                setSelectedTransaction(null);
+              }}
             />
           </>
         )}

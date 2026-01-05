@@ -145,7 +145,7 @@ const PayLaterApplicationPage: React.FC = () => {
     return (
         <div className="flex flex-col space-y-6 p-5">
             <h2 className="text-2xl font-bold">
-                Đơn đăng ký PayLater
+                Đơn đăng ký ví trả sau
             </h2>
 
             <div className="flex flex-col bg-white p-4 rounded-lg shadow-md space-y-4">
@@ -171,9 +171,9 @@ const PayLaterApplicationPage: React.FC = () => {
                         value={typeFilter}
                         onChange={(v) => { setCurrentPage(1); setTypeFilter(v); }}
                         options={[
-                            { value: PayLaterApplicationType.ACTIVATION, label: 'Kích hoạt thẻ PayLater' },
+                            { value: PayLaterApplicationType.ACTIVATION, label: 'Kích hoạt ví trả sau' },
                             { value: PayLaterApplicationType.LIMIT_ADJUSTMENT, label: 'Điều chỉnh hạn mức tín dụng' },
-                            { value: PayLaterApplicationType.SUSPEND_REQUEST, label: 'Yêu cầu tạm ngưng thẻ PayLater' },
+                            { value: PayLaterApplicationType.SUSPEND_REQUEST, label: 'Yêu cầu tạm ngưng ví trả sau' },
                         ]}
                     />
                     <DatePicker.RangePicker

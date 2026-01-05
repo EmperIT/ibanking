@@ -6,7 +6,7 @@ import CashTransactionModal from "@/components/CashTransactionModal";
 import { ActionType } from "@/enum/status";
 import CustomButton from "@/components/Button";
 import { walletNormalManagementRoute } from "@/routes/dashboard";
-import { useGetWalletInfo } from "@/hooks/wallet.hook";
+import { useGetWalletInfo, useUpdateWalletStatus } from "@/hooks/wallet.hook";
 import type { WalletStatus } from "@/enum/status";
 import { useEffect, useState } from "react";
 import { colors } from "@/theme/color";
@@ -15,11 +15,13 @@ const WalletDetailPage: React.FC = () => {
   const { walletNumber } = useParams({ strict: false });
   const navigate = useNavigate();
   const { data: walletInfo, isPending } = useGetWalletInfo(walletNumber);
+  const { mutate: updateWalletStatus, isPending: isUpdating } = useUpdateWalletStatus();
   const [form] = Form.useForm();
   const [openModal, setOpenModal] = useState(false);
   const [actionType, setActionType] = useState<
     typeof ActionType[keyof typeof ActionType]
   >(ActionType.CASH_DEPOSIT);
+  const [newStatus, setNewStatus] = useState<WalletStatus | undefined>(undefined);
 
   // ======================
   // FILL FORM WHEN DATA READY
@@ -27,6 +29,7 @@ const WalletDetailPage: React.FC = () => {
   useEffect(() => {
     if (walletInfo) {
       form.setFieldsValue(walletInfo);
+      setNewStatus(walletInfo.status);
     }
   }, [walletInfo, form]);
 
@@ -72,14 +75,14 @@ const WalletDetailPage: React.FC = () => {
                   <Input disabled />
                 </Form.Item>
 
-                <Form.Item label="Trạng thái ví" name="status">
+                <Form.Item label="Cập nhật trạng thái">
                   <Select<WalletStatus>
+                    value={newStatus}
+                    onChange={(val) => setNewStatus(val)}
                     options={[
                       { value: "ACTIVE", label: "Hoạt động" },
-                      { value: "PENDING", label: "Chưa kích hoạt" },
                       { value: "SUSPENDED", label: "Bị khóa" },
                     ]}
-                    disabled
                   />
                 </Form.Item>
 
@@ -123,6 +126,20 @@ const WalletDetailPage: React.FC = () => {
                     }
                   />
                 </Form.Item>
+                <div className="col-span-full flex justify-end">
+                  <CustomButton
+                    label="Lưu"
+                    loading={isUpdating}
+                    size="small"
+                    onClick={() => {
+                      if (!walletInfo?.walletNumber || !newStatus) return;
+                      updateWalletStatus({
+                        walletNumber: walletInfo.walletNumber,
+                        status: newStatus,
+                      });
+                    }}
+                  />
+                </div>
               </div>
             </Form>
           )}

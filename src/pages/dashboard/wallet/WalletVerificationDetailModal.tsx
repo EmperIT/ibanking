@@ -1,6 +1,7 @@
 import { Modal, Form, Input, Row, Col, Tag, Button } from "antd";
 import type { WalletVerificationResource } from "@/types/walltet.type";
 import type { VerificationStatus } from "@/enum/status";
+import { useProcessWalletVerification } from "@/hooks/wallet.hook";
 import dayjs from "dayjs";
 
 interface Props {
@@ -35,13 +36,39 @@ const WalletVerificationDetailModal: React.FC<Props> = ({
 }) => {
   if (!verified) return null;
 
+  const { mutate: processWalletVerification, isPending: isProcessing } = useProcessWalletVerification();
+
   return (
     <Modal
       open={open}
       title="Chi tiết đơn xác thực ví"
       onCancel={onClose}
       footer={[
-        <Button key="close" onClick={onClose} disabled={loading}>
+        verified.status === "PENDING" && (
+          <Button
+            key="approve"
+            type="primary"
+            loading={isProcessing}
+            onClick={() =>
+              processWalletVerification({ requestId: verified.id, status: "APPROVED" })
+            }
+          >
+            Duyệt
+          </Button>
+        ),
+        verified.status === "PENDING" && (
+          <Button
+            key="reject"
+            danger
+            onClick={() =>
+              processWalletVerification({ requestId: verified.id, status: "REJECTED" })
+            }
+            disabled={isProcessing}
+          >
+            Từ chối
+          </Button>
+        ),
+        <Button key="close" onClick={onClose} disabled={loading || isProcessing}>
           Đóng
         </Button>,
       ]}
@@ -158,7 +185,7 @@ const WalletVerificationDetailModal: React.FC<Props> = ({
             </Form.Item>
           </Col>
 
-          
+
         </Row>
       </Form>
     </Modal>

@@ -1,6 +1,7 @@
 import { Modal, Form, Input, Row, Col, Tag, Button } from "antd";
 import type { PayLaterApplicationResource } from "@/types/walltet.type";
 import type { PayLaterApplicationType, PayLaterApplicationStatus } from "@/enum/status";
+import { useProcessPaylaterApplication } from "@/hooks/wallet.hook";
 import dayjs from "dayjs";
 
 interface Props {
@@ -50,13 +51,38 @@ const PayLaterApplicationDetailModal: React.FC<Props> = ({
 }) => {
   if (!application) return null;
 
+  const { mutate: processPaylaterApplication, isPending: isProcessing } = useProcessPaylaterApplication();
   return (
     <Modal
       open={open}
       title="Chi tiết đơn đăng ký PayLater"
       onCancel={onClose}
       footer={[
-        <Button key="close" onClick={onClose} disabled={loading}>
+        application.status === "PENDING" && (
+          <Button
+            key="approve"
+            type="primary"
+            loading={isProcessing}
+            onClick={() =>
+              processPaylaterApplication({ id: application.id, action: "APPROVE" })
+            }
+          >
+            Duyệt
+          </Button>
+        ),
+        application.status === "PENDING" && (
+          <Button
+            key="reject"
+            danger
+            onClick={() =>
+              processPaylaterApplication({ id: application.id, action: "REJECT" })
+            }
+            disabled={isProcessing}
+          >
+            Từ chối
+          </Button>
+        ),
+        <Button key="close" onClick={onClose} disabled={loading || isProcessing}>
           Đóng
         </Button>,
       ]}

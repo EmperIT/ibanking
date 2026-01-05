@@ -40,7 +40,7 @@ export const walletService = {
         return response.data;
     },
     processWalletVerification: async (data: ProcessWalletVerificationRequest): Promise<ProcessWalletVerificationResponse> => {
-        const response: AxiosResponse<ProcessWalletVerificationResponse> = await httpClient.post<ProcessWalletVerificationResponse>(API_ROUTES.wallet.processWalletVerification, data);
+        const response: AxiosResponse<ProcessWalletVerificationResponse> = await httpClient.put<ProcessWalletVerificationResponse>(API_ROUTES.wallet.processWalletVerification, data);
         return response.data;
     },
 
@@ -57,7 +57,7 @@ export const walletService = {
         return response.data;
     },
     processPaylaterApplication: async (data: ProcessPaylaterApplicationRequest): Promise<ProcessPaylaterApplicationResponse> => {
-        const response: AxiosResponse<ProcessPaylaterApplicationResponse> = await httpClient.post<ProcessPaylaterApplicationResponse>(API_ROUTES.wallet.processPaylaterApplication, data);
+        const response: AxiosResponse<ProcessPaylaterApplicationResponse> = await httpClient.put<ProcessPaylaterApplicationResponse>(API_ROUTES.wallet.processPaylaterApplication, data);
         return response.data;
     }
 }

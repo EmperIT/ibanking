@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { UsergroupAddOutlined } from "@ant-design/icons";
+import { DashboardOutlined, TeamOutlined, WalletOutlined, TransactionOutlined, BellOutlined } from "@ant-design/icons";
 import { Outlet, useNavigate, useLocation } from "@tanstack/react-router";
 import { useLogout } from "@/hooks/auth.hook";
 import logo from "@/assets/Logomark.png";
@@ -29,19 +29,23 @@ const DashboardLayout = () => {
 
     const mainMenuItems = [
         {
+            key: "analytics",
+            label: "Tổng quan",
+            icon: <DashboardOutlined />,
+        },
+        {
             key: "users",
             label: "Quản lý người dùng",
-            icon: <UsergroupAddOutlined />,
+            icon: <TeamOutlined />,
             subMenu: [
                 { key: "list", label: "Danh sách người dùng" },
-                { key: "roles", label: "Vai trò & Quyền" },
                 { key: "logout", label: "Đăng xuất" },
             ],
         },
         {
             key: "wallets-management",
             label: "Quản lý ví",
-            icon: <UsergroupAddOutlined />,
+            icon: <WalletOutlined />,
             subMenu: [
                 { key: "wallets", label: "Ví thường" },
                 { key: "wallet-verifications", label: "Xác minh ví" },
@@ -52,18 +56,28 @@ const DashboardLayout = () => {
         {
             key: "transactions",
             label: "Quản lý giao dịch",
-            icon: <UsergroupAddOutlined />,
+            icon: <TransactionOutlined />,
         },
         {
-            key: "ai-training-data",
-            label: "Nội dung AI",
-            icon: <UsergroupAddOutlined />,
+            key: "notifications",
+            label: "Quản lý thông báo",
+            icon: <BellOutlined />,
+            subMenu: [
+                { key: "list", label: "Danh sách thông báo" },
+                { key: "log-mails", label: "Nhật ký email" },
+            ],
         },
-        {
-            key: "credit-policy",
-            label: "Chính sách tín dụng",
-            icon: <UsergroupAddOutlined />,
-        },
+
+        // {
+        //     key: "ai-training-data",
+        //     label: "Nội dung AI",
+        //     icon: <UsergroupAddOutlined />,
+        // },
+        // {
+        //     key: "credit-policy",
+        //     label: "Chính sách tín dụng",
+        //     icon: <UsergroupAddOutlined />,
+        // },
     ];
 
     const handleMenuClick = (item: any) => {

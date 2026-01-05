@@ -1,5 +1,3 @@
-import { UpdateWalletStatusRequest } from './walltet.type';
-import { PayLaterApplicationStatus } from './../enum/status';
 import type { PaginationResponse } from "./baseresponse";
 import type { WalletStatus, VerificationStatus, PayLaterApplicationStatus, PayLaterApplicationType } from "@/enum/status";
 export interface WalletResource {
@@ -112,8 +110,7 @@ export interface FilterPayLaters extends FilterWallets {}
 
 export interface ProcessPaylaterApplicationRequest {
     id: string;
-    action: PayLaterApplicationStatus;
-
+    action: "APPROVE" | "REJECT";
 }
 export type PayLaterPaginationResponse = PaginationResponse<PayLaterResource>;
 export type PayLaterApplicationPaginationResponse = PaginationResponse<PayLaterApplicationResource>;

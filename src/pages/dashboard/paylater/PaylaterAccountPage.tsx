@@ -144,26 +144,15 @@ const PayLaterAccountPage: React.FC = () => {
 
   return (
     <div className="flex flex-col space-y-6 p-5">
-      <h2 className="text-2xl font-bold">Tài khoản PayLater</h2>
 
       {/* SEARCH + SORT */}
       <div className="flex items-center gap-4 flex-wrap">
+        <h2 className="text-2xl font-bold">Ví trả sau</h2>
         <SearchComponent
           placeholder="Tìm theo tên người dùng..."
           value={searchValue}
           onChange={setSearchValue}
           onSearch={setSearchValue}
-        />
-
-        <Select
-          allowClear
-          placeholder="Sắp xếp"
-          className="w-[200px]"
-          onChange={setSortBy}
-          options={[
-            { value: "word_asc", label: "Tên A → Z" },
-            { value: "word_desc", label: "Tên Z → A" },
-          ]}
         />
       </div>
 
@@ -177,13 +166,23 @@ const PayLaterAccountPage: React.FC = () => {
           }}
           items={[
             { key: "ALL", label: "Tất cả" },
-
             { key: "PENDING", label: "Chờ duyệt" },
             { key: "ACTIVE", label: "Hoạt động" },
             { key: "SUSPENDED", label: "Tạm khóa" },
           ]}
         />
-
+        <div className="flex justify-end">
+          <Select
+            allowClear
+            placeholder="Sắp xếp"
+            className="w-[200px]"
+            onChange={setSortBy}
+            options={[
+              { value: "word_asc", label: "Tên A → Z" },
+              { value: "word_desc", label: "Tên Z → A" },
+            ]}
+          />
+        </div>
         {isLoading ? (
           <div className="flex justify-center py-10">
             <Spin />

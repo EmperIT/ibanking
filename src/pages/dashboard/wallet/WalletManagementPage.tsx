@@ -82,12 +82,12 @@ const WalletManagementPage: React.FC = () => {
                 bg: "#D1FADF",
                 color: "#027A48",
             },
-            PENDING: {
+            SUSPENDED: {
                 label: "Bị khóa",
                 bg: "#FEE4E2",
                 color: "#B42318",
             },
-            SUSPENDED: {
+            PENDING: {
                 label: "Chưa kích hoạt",
                 bg: "#FEF0C7",
                 color: "#B54708",

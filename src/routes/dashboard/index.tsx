@@ -9,11 +9,13 @@ import WalletVerificationManagementPage from "@/pages/dashboard/wallet/WalletVer
 import PayLaterAccountPage from "@/pages/dashboard/paylater/PaylaterAccountPage";
 import PayLaterApplicationPage from "@/pages/dashboard/paylater/PaylaterApplicationPage";
 import PaylaterDetailPage from "@/pages/dashboard/paylater/PaylaterDetail";
-import RoleManagementPage from "@/pages/dashboard/role/RolePage";
 import TransactionManagementPage from "@/pages/dashboard/transaction/TransactionPage";
-import TransactionDetailPage from "@/pages/dashboard/transaction/TransactionDetail";
+import TransactionAnalyticsPage from "@/pages/dashboard/transaction/TransactionAnalyticsPage";
 import AiTrainingDataPage from "@/pages/dashboard/ai-content/AiTrainingDataPage";
 import CreditPolicyPage from "@/pages/dashboard/credit/CreaditPolicyPage";
+import NotificationManagementPage from "@/pages/dashboard/notification/NotificationManagementPage";
+import CreateNotificationPage from "@/pages/dashboard/notification/CreateNotificationPage";
+import LogMailManagementPage from "@/pages/dashboard/notification/LogMailPage";
 export const usermanagementRoute = createRoute({
     getParentRoute: () => dashboardLayoutRoute,
     path: "users",
@@ -37,7 +39,7 @@ export const addUserDetailRoute = createRoute({
     component: UserDetailPage,
 });
 
-export const editUserDetailRoute = createRoute({    
+export const editUserDetailRoute = createRoute({
     getParentRoute: () => userListRoute,
     path: "detail/$userId/edit",
     component: UserDetailPage,
@@ -100,17 +102,6 @@ export const paylaterApplicationIndexRoute = createRoute({
     path: "/",
     component: PayLaterApplicationPage,
 });
-export const roleManagementRoute = createRoute({
-    getParentRoute: () => usermanagementRoute,
-    path: "roles",
-    component: () => <div><Outlet /></div>
-});
-
-export const roleManagementIndexRoute = createRoute({
-    getParentRoute: () => roleManagementRoute,
-    path: "/",
-    component: RoleManagementPage,
-});
 
 export const transactionManagementRoute = createRoute({
     getParentRoute: () => dashboardLayoutRoute,
@@ -124,11 +115,12 @@ export const transactionManagementIndexRoute = createRoute({
     component: TransactionManagementPage,
 });
 
-export const transactionDetailRoute = createRoute({
-    getParentRoute: () => transactionManagementRoute,
-    path: "$id",
-    component: TransactionDetailPage,
+export const transactionAnalyticsRoute = createRoute({
+    getParentRoute: () => dashboardLayoutRoute,
+    path: "analytics",
+    component: TransactionAnalyticsPage,
 });
+
 
 export const aiTrainingDataRoute = createRoute({
     getParentRoute: () => dashboardLayoutRoute,
@@ -152,4 +144,33 @@ export const creditPolicyIndexRoute = createRoute({
     getParentRoute: () => creditPolicyRoute,
     path: "/",
     component: CreditPolicyPage,
+});
+
+export const notificationManagementRoute = createRoute({
+    getParentRoute: () => dashboardLayoutRoute,
+    path: "notifications",
+    component: () => <div><Outlet /></div>,
+});
+
+export const notificationListRoute  = createRoute({
+    getParentRoute: () => notificationManagementRoute,
+    path: "list",
+    component: () => <div><Outlet /></div>
+});
+export const notificationListIndexRoute = createRoute({
+    getParentRoute: () => notificationListRoute,
+    path: "/",
+    component: NotificationManagementPage,
+});
+
+export const createNotificationRoute = createRoute({
+    getParentRoute: () => notificationListRoute,
+    path: "create",
+    component: CreateNotificationPage,
+});
+
+export const logMailManagementRoute = createRoute({
+    getParentRoute: () => notificationManagementRoute,
+    path: "log-mails",
+    component: LogMailManagementPage,
 });
