@@ -73,11 +73,11 @@ export function useFilterPayLaterApplications(filterParams: FilterPayLatersAppli
         retry: 1,
     });
 }
-export function useGetPayLaterInfo(username?: string) {
+export function useGetPayLaterInfo(payLaterAccountNumber?: string) {
     return useQuery<PayLaterResponse>({
-        queryKey: ['getPayLaterInfo', username],
-        enabled: !!username,
-        queryFn: () => walletService.getPaylaterInfo(username as string),
+        queryKey: ['getPayLaterInfo', payLaterAccountNumber],
+        enabled: !!payLaterAccountNumber,
+        queryFn: () => walletService.getPaylaterInfo(payLaterAccountNumber as string),
         staleTime: 5 * 60 * 1000,     // 5 phút coi data là "fresh"
         refetchOnWindowFocus: false, // không refetch khi focus lại tab
         refetchOnReconnect: false,   // không refetch khi mạng reconnect

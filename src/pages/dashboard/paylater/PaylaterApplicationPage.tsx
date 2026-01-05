@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Spin, DatePicker, Space } from "antd";
+import { Spin, DatePicker, Space, Select } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 
 
@@ -13,7 +13,8 @@ import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import PayLaterApplicationDetailModal from "./PaylaterApplicationDetailModal";
 import { colors } from "@/theme/color";
-import type { WalletStatus } from "@/enum/status";
+import type { PayLaterApplicationStatus } from "@/enum/status";
+import { PayLaterApplicationType } from "@/enum/status";
 
 const PayLaterApplicationPage: React.FC = () => {
     const getDefaultRange = (): [Dayjs, Dayjs] => {
@@ -26,6 +27,8 @@ const PayLaterApplicationPage: React.FC = () => {
     const [dateRange, setDateRange] = useState<[Dayjs, Dayjs]>(
         getDefaultRange()
     );
+    const [statusFilter, setStatusFilter] = useState<PayLaterApplicationStatus | undefined>(undefined);
+    const [typeFilter, setTypeFilter] = useState<PayLaterApplicationType | undefined>(undefined);
     const [selectedApplication, setSelectedApplication] =
         useState<PayLaterApplicationResource | null>(null);
     const [openDetail, setOpenDetail] = useState(false);
@@ -34,8 +37,13 @@ const PayLaterApplicationPage: React.FC = () => {
         () => ({
             fromDate: dateRange[0]?.format("YYYY-MM-DD"),
             toDate: dateRange[1]?.format("YYYY-MM-DD"),
+            status: statusFilter || undefined,
+            type: typeFilter || undefined,
+            page: currentPage - 1,
+            size: itemsPerPage,
         }),
-        [dateRange]
+        [dateRange, statusFilter, typeFilter, currentPage, itemsPerPage]
+
     );
 
     const { data, isLoading } = useFilterPayLaterApplications(filterParams);
@@ -92,25 +100,30 @@ const PayLaterApplicationPage: React.FC = () => {
         }
 
     ];
-    const renderStatus = (status?: WalletStatus) => {
+    const renderStatus = (status?: PayLaterApplicationStatus) => {
         if (!status) return "-";
 
-        const map: Record<WalletStatus, { label: string; bg: string; color: string }> =
+        const map: Record<PayLaterApplicationStatus, { label: string; bg: string; color: string }> =
         {
             PENDING: {
                 label: "Chờ duyệt",
                 bg: "#FEF0C7",
                 color: "#B54708",
             },
-            ACTIVE: {
-                label: "Hoạt động",
+            APPROVED: {
+                label: "Đã duyệt",
                 bg: "#D1FADF",
                 color: "#027A48",
             },
-            SUSPENDED: {
-                label: "Tạm khóa",
+            REJECTED: {
+                label: "Từ chối",
                 bg: "#FEE4E2",
                 color: "#B42318",
+            },
+            CANCELED: {
+                label: "Hủy",
+                bg: "#F3F4F6",
+                color: "#374151",
             },
         };
 
@@ -136,15 +149,43 @@ const PayLaterApplicationPage: React.FC = () => {
             </h2>
 
             <div className="flex flex-col bg-white p-4 rounded-lg shadow-md space-y-4">
-                <DatePicker.RangePicker
-                    value={dateRange}
-                    allowClear={false}
-                    onChange={(values) => {
-                        if (!values) return;
-                        setCurrentPage(1);
-                        setDateRange(values as [Dayjs, Dayjs]);
-                    }}
-                />
+                <div className="flex justify-end gap-2 items-center">
+                    <Select
+                        allowClear
+                        placeholder="Trạng thái"
+                        style={{ width: 200 }}
+                        value={statusFilter}
+                        onChange={(v) => { setCurrentPage(1); setStatusFilter(v); }}
+                        options={[
+                            { value: 'PENDING', label: 'Chờ duyệt' },
+                            { value: 'APPROVED', label: 'Đã duyệt' },
+                            { value: 'REJECTED', label: 'Từ chối' },
+                            { value: 'CANCELED', label: 'Hủy' },
+                        ]}
+                    />
+
+                    <Select
+                        allowClear
+                        placeholder="Loại yêu cầu"
+                        style={{ width: 260 }}
+                        value={typeFilter}
+                        onChange={(v) => { setCurrentPage(1); setTypeFilter(v); }}
+                        options={[
+                            { value: PayLaterApplicationType.ACTIVATION, label: 'Kích hoạt thẻ PayLater' },
+                            { value: PayLaterApplicationType.LIMIT_ADJUSTMENT, label: 'Điều chỉnh hạn mức tín dụng' },
+                            { value: PayLaterApplicationType.SUSPEND_REQUEST, label: 'Yêu cầu tạm ngưng thẻ PayLater' },
+                        ]}
+                    />
+                    <DatePicker.RangePicker
+                        value={dateRange}
+                        allowClear={false}
+                        onChange={(values) => {
+                            if (!values) return;
+                            setCurrentPage(1);
+                            setDateRange(values as [Dayjs, Dayjs]);
+                        }}
+                    />
+                </div>
 
 
                 {isLoading ? (

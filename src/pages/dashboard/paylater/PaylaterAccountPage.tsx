@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Tabs, Space, Spin, Select } from "antd";
 import { EditOutlined } from "@ant-design/icons";
-
+import { useNavigate } from "@tanstack/react-router";
 import TableComponent from "@/components/Table";
 import PaginationComponent from "@/components/Pagination";
 import { SearchComponent } from "@/components/Search";
@@ -11,8 +11,10 @@ import type { TableColumn } from "@/components/Table";
 import type { PayLaterResource } from "@/types/walltet.type";
 import type { WalletStatus } from "@/enum/status";
 import { useFilterPayLaters } from "@/hooks/wallet.hook";
+import { paylaterDetailRoute } from "@/routes/dashboard";
 
 const PayLaterAccountPage: React.FC = () => {
+  const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState("");
   const [status, setStatus] = useState<WalletStatus | "ALL">("ALL");
   const [sortBy, setSortBy] = useState<string>("");
@@ -83,7 +85,26 @@ const PayLaterAccountPage: React.FC = () => {
       align: "center",
       render: (i) => renderStatus(i.status),
     },
+    {
+      key: "actions",
+      label: "Hành động",
+      align: "center",
+    }
   ];
+  const renderActions = (item: PayLaterResource) => (
+    <Space size={12}>
+      <EditOutlined
+        title="Xem chi tiết ví"
+        style={{ fontSize: 18, color: colors.orange.o1, cursor: "pointer" }}
+        onClick={() =>
+          navigate({
+            to: paylaterDetailRoute.to,
+            params: { payLaterAccountNumber: item.payLaterAccountNumber },
+          })
+        }
+      />
+    </Space>
+  );
   const renderStatus = (status?: WalletStatus) => {
     if (!status) return "-";
 
@@ -172,6 +193,7 @@ const PayLaterAccountPage: React.FC = () => {
             <TableComponent
               columns={columns}
               dataSource={accounts}
+              renderActions={renderActions}
             />
 
             <PaginationComponent

@@ -1,6 +1,6 @@
 import { Modal, Form, Input, Row, Col, Tag, Button } from "antd";
 import type { PayLaterApplicationResource } from "@/types/walltet.type";
-import type { PayLaterApplicationType, WalletStatus } from "@/enum/status";
+import type { PayLaterApplicationType, PayLaterApplicationStatus } from "@/enum/status";
 import dayjs from "dayjs";
 
 interface Props {
@@ -10,16 +10,18 @@ interface Props {
   onClose: () => void;
 }
 
-const STATUS_COLOR_MAP: Record<WalletStatus, string> = {
+const STATUS_COLOR_MAP: Record<PayLaterApplicationStatus, string> = {
   PENDING: "orange",
-  ACTIVE: "green",
-  SUSPENDED: "red",
+  APPROVED: "green",
+  REJECTED: "red",
+  CANCELED: "gray",
 };
 
-const STATUS_LABEL_MAP: Record<WalletStatus, string> = {
+const STATUS_LABEL_MAP: Record<PayLaterApplicationStatus, string> = {
   PENDING: "Chờ duyệt",
-  ACTIVE: "Đã duyệt",
-  SUSPENDED: "Từ chối",
+  APPROVED: "Đã duyệt",
+  REJECTED: "Từ chối",
+  CANCELED: "Hủy",
 };
 
 

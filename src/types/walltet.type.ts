@@ -1,3 +1,5 @@
+import { UpdateWalletStatusRequest } from './walltet.type';
+import { PayLaterApplicationStatus } from './../enum/status';
 import type { PaginationResponse } from "./baseresponse";
 import type { WalletStatus, VerificationStatus, PayLaterApplicationStatus, PayLaterApplicationType } from "@/enum/status";
 export interface WalletResource {
@@ -51,10 +53,25 @@ export interface FilterWalletVertifications {
     status?: VerificationStatus;
     sort_by?: string;
 }
+
+export interface ProcessWalletVerificationRequest {
+    requestId: string;
+    status: VerificationStatus;
+}
+
+export interface UpdateWalletStatusRequest {
+    walletNumber: string;
+    status: WalletStatus;
+}
+
 export type WalletPaginationResponse = PaginationResponse<WalletResource>;
 export type WalletResponse = WalletResource;
 export type WalletsVerificationPaginationResponse = PaginationResponse<WalletVerificationResource>; 
 export type WalletVerificationResponse = WalletVerificationResource;
+export type ProcessWalletVerificationResponse = WalletVerificationResource;
+export type UpdateWalletStatusResponse = {
+    message: string;
+};
 export interface PayLaterResource {
     id: string;
     approvedAt?: string;
@@ -79,7 +96,7 @@ export interface PayLaterApplicationResource {
     approvedLimit?: number;
     reason?: string;
     rejectionReason?: string;
-    status: WalletStatus;
+    status: PayLaterApplicationStatus;
     approvedBy?: string;
     appliedAt?: string;
     processedAt?: string;
@@ -93,7 +110,13 @@ export interface FilterPayLatersApplications  {
 }
 export interface FilterPayLaters extends FilterWallets {}
 
+export interface ProcessPaylaterApplicationRequest {
+    id: string;
+    action: PayLaterApplicationStatus;
+
+}
 export type PayLaterPaginationResponse = PaginationResponse<PayLaterResource>;
 export type PayLaterApplicationPaginationResponse = PaginationResponse<PayLaterApplicationResource>;
 export type PayLaterResponse = PayLaterResource;
+export type ProcessPaylaterApplicationResponse = PayLaterApplicationResource;
 

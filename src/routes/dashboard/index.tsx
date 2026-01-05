@@ -8,6 +8,7 @@ import WalletDetailPage from "@/pages/dashboard/wallet/WalletDetail";
 import WalletVerificationManagementPage from "@/pages/dashboard/wallet/WalletVerificationManagementPage";
 import PayLaterAccountPage from "@/pages/dashboard/paylater/PaylaterAccountPage";
 import PayLaterApplicationPage from "@/pages/dashboard/paylater/PaylaterApplicationPage";
+import PaylaterDetailPage from "@/pages/dashboard/paylater/PaylaterDetail";
 import RoleManagementPage from "@/pages/dashboard/role/RolePage";
 import TransactionManagementPage from "@/pages/dashboard/transaction/TransactionPage";
 import TransactionDetailPage from "@/pages/dashboard/transaction/TransactionDetail";
@@ -81,6 +82,12 @@ export const paylaterAccountIndexRoute = createRoute({
     getParentRoute: () => paylaterAccountRoute,
     path: "/",
     component: PayLaterAccountPage,
+});
+
+export const paylaterDetailRoute = createRoute({
+    getParentRoute: () => paylaterAccountRoute,
+    path: "$payLaterAccountNumber",
+    component: PaylaterDetailPage,
 });
 
 export const paylaterApplicationRoute = createRoute({

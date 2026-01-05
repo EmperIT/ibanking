@@ -18,6 +18,7 @@ import {
     paylaterApplicationIndexRoute,
     paylaterApplicationRoute,
     paylaterAccountIndexRoute,
+    paylaterDetailRoute,
     roleManagementRoute,
     roleManagementIndexRoute,
     transactionManagementRoute,
@@ -52,6 +53,7 @@ export const routeTree = rootRoute.addChildren([
             walletVerificationManagementRoute,
             paylaterAccountRoute.addChildren([
                 paylaterAccountIndexRoute,
+                paylaterDetailRoute,
             ]),
             paylaterApplicationRoute.addChildren([
                 paylaterApplicationIndexRoute,

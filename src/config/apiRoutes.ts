@@ -49,12 +49,12 @@ const API_ROUTES = {
         getWalletInfo: (walletNumber: string) => `${baseURL}/api/manage/wallets/${walletNumber}`,// done
         filterAccounts: `${baseURL}/api/manage/wallets/filter`,//done
         updateStatus: `${baseURL}/api/manage/wallets/status`,
-        filterWalletVertifications: `${baseURL}/api/manage/wallet-verifications/filter`,
+        filterWalletVertifications: `${baseURL}/api/manage/wallet-verifications/filter`, //done
         processWalletVerification: `${baseURL}/api/manage/wallet-verifications/process`,
         processPaylaterApplication: `${baseURL}/api/manage/pay-later/applications/process`,
         filterPaylaterApplications: `${baseURL}/api/manage/pay-later/applications/filter`,//done
         filterAccountsPaylater: `${baseURL}/api/manage/pay-later/accounts/filter`,//done
-        getPayLaterInfo: (accountNumber: string) => `${baseURL}/api/manage/pay-later/accounts/${accountNumber}`,
+        getPayLaterInfo: (payLaterAccountNumber: string) => `${baseURL}/api/manage/pay-later/accounts/${payLaterAccountNumber}`, //done
         filterBillingCycle: `${baseURL}/api/manage/pay-later/billing-cycles/filter`,
         //admin
 

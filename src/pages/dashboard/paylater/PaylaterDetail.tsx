@@ -2,29 +2,32 @@ import { Form, Input, Select, Spin } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import Section from "@/components/Section";
-import { ActionType } from "@/enum/status";
-import CustomButton from "@/components/Button";
-import { walletNormalManagementRoute } from "@/routes/dashboard";
+import { paylaterAccountRoute } from "@/routes/dashboard";
 import { useGetPayLaterInfo } from "@/hooks/wallet.hook";
 import type { WalletStatus } from "@/enum/status";
-import { useEffect, useState } from "react";
-import { colors } from "@/theme/color";
+import { formatDate } from "@/utils/date";
+import { useEffect } from "react";
 
 const PaylaterDetailPage: React.FC = () => {
-    const { username } = useParams({ strict: false });
+    const { payLaterAccountNumber } = useParams({ strict: false });
     const navigate = useNavigate();
-    const { data: paylaterInfo, isPending } = useGetPayLaterInfo(username);
+    const { data: paylaterInfo, isPending } = useGetPayLaterInfo(payLaterAccountNumber as string);
     const [form] = Form.useForm();
-    const [actionType, setActionType] = useState<
-        typeof ActionType[keyof typeof ActionType]
-    >(ActionType.CASH_DEPOSIT);
+
 
     // ======================
     // FILL FORM WHEN DATA READY
     // ======================
     useEffect(() => {
         if (paylaterInfo) {
-            form.setFieldsValue(paylaterInfo);
+            const formatted = {
+                ...paylaterInfo,
+                nextDueDate: paylaterInfo.nextDueDate ? formatDate(paylaterInfo.nextDueDate) : undefined,
+                nextBillingDate: paylaterInfo.nextBillingDate ? formatDate(paylaterInfo.nextBillingDate) : undefined,
+                approvedAt: paylaterInfo.approvedAt ? formatDate(paylaterInfo.approvedAt) : undefined,
+            };
+
+            form.setFieldsValue(formatted);
         }
     }, [paylaterInfo, form]);
 
@@ -37,7 +40,7 @@ const PaylaterDetailPage: React.FC = () => {
             <h2 className="text-2xl text-black font-bold flex items-center">
                 <ArrowLeftOutlined
                     className="mr-4 cursor-pointer"
-                    onClick={() => navigate({ to: walletNormalManagementRoute.to })}
+                    onClick={() => navigate({ to: paylaterAccountRoute.to })}
                 />
                 Chi tiết ví trả sau 
             </h2>
@@ -58,19 +61,15 @@ const PaylaterDetailPage: React.FC = () => {
                                     <Input disabled />
                                 </Form.Item>
 
-                                <Form.Item label="Email" name="mail">
+                                <Form.Item label="Số tài khoản ví" name="walletNumber">
                                     <Input disabled />
                                 </Form.Item>
 
-                                <Form.Item label="Số tài khoản" name="username">
+                                <Form.Item label="Số TK PayLater" name="payLaterAccountNumber">
                                     <Input disabled />
                                 </Form.Item>
 
-                                <Form.Item label="Ngân hàng" name="merchantName">
-                                    <Input disabled />
-                                </Form.Item>
-
-                                <Form.Item label="Trạng thái ví" name="status">
+                                <Form.Item label="Trạng thái" name="status">
                                     <Select<WalletStatus>
                                         options={[
                                             { value: "ACTIVE", label: "Hoạt động" },
@@ -81,56 +80,58 @@ const PaylaterDetailPage: React.FC = () => {
                                     />
                                 </Form.Item>
 
-                                <Form.Item label="Số dư">
-                                    <div className="flex items-center justify-between gap-3">
-                                        <Input
-                                            disabled
-                                            value={
-                                                paylaterInfo?.balance != null
-                                                    ? paylaterInfo.balance.toLocaleString("vi-VN") + " ₫"
-                                                    : "-"
-                                            }
-                                        />
-
-                                        <div className="flex gap-2">
-                                            <CustomButton
-                                                label="Nạp"
-                                                onClick={() => {
-                                                    setActionType(ActionType.CASH_DEPOSIT);
-                                                    setOpenModal(true);
-                                                }}
-                                            />
-                                            <CustomButton
-                                                label="Rút"
-                                                color={colors.red?.r1}
-                                                onClick={() => {
-                                                    setActionType(ActionType.CASH_WITHDRAW);
-                                                    setOpenModal(true);
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
-                                </Form.Item>
-                                <Form.Item label="Xác thực">
+                                <Form.Item label="Hạn mức tín dụng (Credit Limit)" name="creditLimit">
                                     <Input
                                         disabled
                                         value={
-                                            paylaterInfo?.verified
-                                                ? "Đã xác thực"
-                                                : "Chưa xác thực"
+                                            paylaterInfo?.creditLimit != null
+                                                ? paylaterInfo.creditLimit.toLocaleString("vi-VN") + " ₫"
+                                                : "-"
                                         }
                                     />
                                 </Form.Item>
+
+                                <Form.Item label="Số dư đã dùng (Used Credit)" name="usedCredit">
+                                    <Input
+                                        disabled
+                                        value={
+                                            paylaterInfo?.usedCredit != null
+                                                ? paylaterInfo.usedCredit.toLocaleString("vi-VN") + " ₫"
+                                                : "-"
+                                        }
+                                    />
+                                </Form.Item>
+
+                                <Form.Item label="Lãi suất" name="interestRate">
+                                    <Input
+                                        disabled
+                                        value={
+                                            paylaterInfo?.interestRate != null
+                                                ? `${paylaterInfo.interestRate}%`
+                                                : "-"
+                                        }
+                                    />
+                                </Form.Item>
+
+                                <Form.Item label="Ngày đến hạn tiếp theo" name="nextDueDate">
+                                    <Input disabled />
+                                </Form.Item>
+
+                                <Form.Item label="Ngày lập hóa đơn tiếp theo" name="nextBillingDate">
+                                    <Input disabled />
+                                </Form.Item>
+
+                                <Form.Item label="Được duyệt bởi" name="approvedBy">
+                                    <Input disabled value={paylaterInfo?.approvedBy ?? "-"} />
+                                </Form.Item>
+
+                                <Form.Item label="Ngày duyệt" name="approvedAt">
+                                    <Input disabled />
+                                </Form.Item>
+
+                                
                             </div>
                         </Form>
-                    )}
-                    {paylaterInfo?.username && (
-                        <CashTransactionModal
-                            open={openModal}
-                            onClose={() => setOpenModal(false)}
-                            actionType={actionType}
-                            sourceusername={paylaterInfo.username}
-                        />
                     )}
                 </Section>
             </div>
