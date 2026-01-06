@@ -29,6 +29,7 @@ export interface LogMailResource {
 export interface FilterLogMails {
     mailKeyword?: string;
     size?: number;
+    page?: number;
 }
 export type LogMailPaginationResponse = PaginationResponse<LogMailResource>;
 export type NotificationPaginationResponse = PaginationResponse<NotificationResource>;
