@@ -36,14 +36,14 @@ const API_ROUTES = {
         topUsersForManage: `${baseURL}/api/manage/transactions/statistics/users/top`,
 
     },
-    expensetype: {
-        //both
+    // expensetype: {
+    //     //both
 
-        //admin
-        createExpenseType: `${baseURL}/api/manage/expense-types/`,
-        updateExpenseType: `${baseURL}/api/manage/expense-types/`,
-        getAllExpenseType: `${baseURL}/api/manage/expense-types/`,
-    },
+    //     //admin
+    //     createExpenseType: `${baseURL}/api/manage/expense-types/`,
+    //     updateExpenseType: `${baseURL}/api/manage/expense-types/`,
+    //     getAllExpenseType: `${baseURL}/api/manage/expense-types/`,
+    // },
     wallet: {
         //both
         getWalletInfo: (walletNumber: string) => `${baseURL}/api/manage/wallets/${walletNumber}`,// done
