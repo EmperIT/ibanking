@@ -16,7 +16,7 @@ import { useFilterWallets } from "@/hooks/wallet.hook";
 import {
     walletDetailRoute,
 } from "@/routes/dashboard";
-import type { WalletStatus } from "@/enum/status";
+import type { VerificationStatus, WalletStatus } from "@/enum/status";
 const WalletManagementPage: React.FC = () => {
     const navigate = useNavigate();
 
@@ -111,6 +111,40 @@ const WalletManagementPage: React.FC = () => {
             </span>
         );
     };
+    const renderVerifyStatus = (status: boolean | undefined) => {
+
+
+        const statusConfig: Record<string, { label: string; bg: string; color: string }> = {
+            VERIFIED: {
+                label: "Đã xác thực",
+                bg: "#D1FADF",
+                color: "#027A48",
+            },
+
+            NOT_VERIFIED: {
+                label: "Chưa xác thực",
+                bg: "#FEF0C7",
+                color: "#B54708",
+            },
+
+
+        } as const;
+
+        const config = status ? statusConfig["VERIFIED"] : statusConfig["NOT_VERIFIED"] ?? {
+
+        }
+        return (
+            <span
+                className="inline-block px-3 py-1 rounded-md text-sm font-medium"
+                style={{
+                    backgroundColor: config.bg,
+                    color: config.color,
+                }}
+            >
+                {config.label}
+            </span>
+        );
+    };
 
     /* =======================
        TABLE COLUMNS
@@ -158,11 +192,7 @@ const WalletManagementPage: React.FC = () => {
             label: "Xác thực",
             align: "center",
             render: (item) =>
-                item.verified ? (
-                    <span className="text-green-600 font-medium">✔ Đã xác thực</span>
-                ) : (
-                    <span className="text-gray-400">✖ Chưa xác thực</span>
-                ),
+                renderVerifyStatus(item.verified)
         },
         {
             key: "status",

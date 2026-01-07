@@ -20,7 +20,7 @@ const API_ROUTES = {
         //both
 
         //admin
-        filterLogMails: `${baseURL}/api/manage/logs/emails/filter`,
+        filterLogMails: `${baseURL}/api/manage/logs/mails/filter`,
         createNotification: `${baseURL}/api/manage/notifications/`,
         filterNotifications: `${baseURL}/api/manage/notifications/filter`,
 
@@ -34,15 +34,15 @@ const API_ROUTES = {
         trendsForManage: `${baseURL}/api/manage/transactions/statistics/trends`,
         distributionForManage: `${baseURL}/api/manage/transactions/statistics/distribution`,
         topUsersForManage: `${baseURL}/api/manage/transactions/statistics/users/top`,
-        
+
     },
-    expensetype:{
+    expensetype: {
         //both
 
         //admin
         createExpenseType: `${baseURL}/api/manage/expense-types/`,
-        updateExpenseType:  `${baseURL}/api/manage/expense-types/`,
-        getAllExpenseType:  `${baseURL}/api/manage/expense-types/`,
+        updateExpenseType: `${baseURL}/api/manage/expense-types/`,
+        getAllExpenseType: `${baseURL}/api/manage/expense-types/`,
     },
     wallet: {
         //both
@@ -66,8 +66,8 @@ const API_ROUTES = {
 
         //admin
         createBatchUsers: `${baseURL}/api/users/management/create-batch-users`,
-        unbanUser : `${baseURL}/api/users/management/unlock-users`,//done
-        banUser : `${baseURL}/api/users/management/ban-users`,//done
+        unbanUser: `${baseURL}/api/users/management/unlock-users`,//done
+        banUser: `${baseURL}/api/users/management/ban-users`,//done
         filterUsers: `${baseURL}/api/users/management/filter`,//done
         //staff
     }

@@ -62,6 +62,8 @@ const TransactionManagementPage: React.FC = () => {
       fromDate,
       toDate,
       sortBy: sortBy || "processed_at_desc",
+      size: itemsPerPage,
+      page: currentPage - 1,
     }),
     [
       accountNumber,
@@ -70,6 +72,8 @@ const TransactionManagementPage: React.FC = () => {
       fromDate,
       toDate,
       sortBy,
+      currentPage,
+      itemsPerPage,
     ]
   );
 
@@ -81,10 +85,10 @@ const TransactionManagementPage: React.FC = () => {
   const totalItems = data?.totalElements ?? transactions.length;
   //  Pagination
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedData = transactions?.slice(
-    startIndex,
-    startIndex + itemsPerPage
-  );
+  // const paginatedData = transactions?.slice(
+  //   startIndex,
+  //   startIndex + itemsPerPage
+  // );
   useEffect(() => {
     setCurrentPage(1);
   }, [
@@ -351,7 +355,7 @@ const TransactionManagementPage: React.FC = () => {
           <>
             <TableComponent<TransactionResource>
               columns={columns}
-              dataSource={paginatedData}
+              dataSource={transactions}
               renderActions={renderActions}
             />
 

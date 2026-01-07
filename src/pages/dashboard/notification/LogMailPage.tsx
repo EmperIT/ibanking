@@ -24,9 +24,11 @@ const LogMailManagementPage: React.FC = () => {
     const filterParams: FilterLogMails = useMemo(
         () => ({
             mailKeyword: mailKeyword || undefined,
-            size: 1,
+            size: itemsPerPage,
+            page: currentPage - 1,
+
         }),
-        [mailKeyword]
+        [mailKeyword, currentPage, itemsPerPage]
     );
 
     /* =======================
@@ -36,15 +38,14 @@ const LogMailManagementPage: React.FC = () => {
 
     const logMails = data?.contents ?? [];
     const totalItems = data?.totalElements ?? logMails.length;
-
     /* =======================
        PAGINATION (FE)
        ======================= */
     const startIndex = (currentPage - 1) * itemsPerPage;
-    const paginatedData = logMails.slice(
-        startIndex,
-        startIndex + itemsPerPage
-    );
+    // const paginatedData = logMails.slice(
+    //     startIndex,
+    //     startIndex + itemsPerPage
+    // );
 
     /* =======================
        TABLE COLUMNS
@@ -114,7 +115,7 @@ const LogMailManagementPage: React.FC = () => {
                     <>
                         <TableComponent<LogMailResource>
                             columns={columns}
-                            dataSource={paginatedData}
+                            dataSource={logMails}
                         />
 
                         <PaginationComponent

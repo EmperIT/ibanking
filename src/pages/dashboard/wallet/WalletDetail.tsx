@@ -81,7 +81,7 @@ const WalletDetailPage: React.FC = () => {
                     onChange={(val) => setNewStatus(val)}
                     options={[
                       { value: "ACTIVE", label: "Hoạt động" },
-                      { value: "SUSPENDED", label: "Bị khóa" },
+                      { value: "SUSPENDED", label: "Khóa tài khoản" },
                     ]}
                   />
                 </Form.Item>

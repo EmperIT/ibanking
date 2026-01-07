@@ -85,11 +85,37 @@ const PayLaterApplicationPage: React.FC = () => {
             key: "requestedCreditLimit",
             label: "Hạn mức yêu cầu",
             align: "right",
+            render: (i) => {
+
+                if (i.type === PayLaterApplicationType.SUSPEND_REQUEST) {
+                    return "-";
+                }
+                return i.requestedCreditLimit?.toLocaleString("vi-VN") + " ₫"
+            }
         },
         {
             key: "approvedLimit",
             label: "Hạn mức duyệt",
             align: "right",
+
+        },
+        {
+            key: "type",
+            label: "Loại yêu cầu",
+            align: "center",
+            render: (i) => {
+                switch (i.type) {
+                    case PayLaterApplicationType.ACTIVATION:
+                        return "Kích hoạt ví trả sau";
+                    case PayLaterApplicationType.LIMIT_ADJUSTMENT:
+                        return "Điều chỉnh hạn mức tín dụng";
+                    case PayLaterApplicationType.SUSPEND_REQUEST:
+                        return "Yêu cầu tạm ngưng ví trả sau";
+                    default:
+                        return "-";
+                }
+            }
+
         },
         { key: "appliedAt", label: "Ngày đăng ký", render: (i) => i.appliedAt ? dayjs(i.appliedAt).format("DD/MM/YYYY") : "-" },
         { key: "status", label: "Trạng thái", render: (i) => renderStatus(i.status) },
